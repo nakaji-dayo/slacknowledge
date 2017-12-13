@@ -14,6 +14,8 @@ import           Language.Haskell.TH         (Dec, Q, TypeQ)
 import GHC.Generics
 import Database.HDBC.Record (runQuery, runInsert)
 import Database.HDBC (IConnection, SqlValue, commit)
+import qualified Slacknowledge.Config  as C
+import Data.Yaml.Config
 
 hello :: Relation () (Int32, String)
 hello = relation $ return (value 0 >< value "Hello")
@@ -32,12 +34,14 @@ helloWorld = relation $ do
 
 
 connect :: IO Connection
-connect = connectMySQL defaultMySQLConnectInfo
-  { mysqlUser     = "slacknowledge"
-  , mysqlPassword = "slacknowledge"
-  , mysqlDatabase = "slacknowledge"
-  , mysqlHost     = "127.0.0.1"
-  }
+connect = do
+  config <- loadYamlSettings ["config.yaml"] [] useEnv
+  connectMySQL defaultMySQLConnectInfo
+    { mysqlUser     = C.mysqlUser config
+    , mysqlPassword = C.mysqlPassword config
+    , mysqlDatabase = "slacknowledge"
+    , mysqlHost     = C.mysqlHost config
+    }
 
 convTypes :: [(String, TypeQ)]
 convTypes = [("MEDIUMINT", [t|Int32|])]

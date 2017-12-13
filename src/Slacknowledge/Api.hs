@@ -78,18 +78,18 @@ searchR :: Maybe Text -> Handler Markup
 searchR mtag = do
   ethreads <- liftIO $ runExceptT $ ES.searchThread mtag
   return $ case ethreads of
-    Right threads -> $(compileTextFile "templates/index.html")
-    Left e        ->  $(compileTextFile "templates/500.html")
+    Right threads -> $(compileTextFile "templates/dist/index.html")
+    Left e        ->  $(compileTextFile "templates/dist/500.html")
 
 detailHtml :: Text -> Handler Markup
 detailHtml id = do
   ethread <- liftIO . runExceptT $ ES.getThread id
   liftIO $ print ethread
   case ethread of
-    Right thread -> return $(compileTextFile "templates/detail.html")
+    Right thread -> return $(compileTextFile "templates/dist/detail.html")
     Left e -> do
       liftIO $ print e
-      return $(compileTextFile "templates/500.html")
+      return $(compileTextFile "templates/dist/500.html")
 
 
 postTagR :: Text -> PostTagRequest -> Handler Text
@@ -115,14 +115,14 @@ slackAuthRedirect (Just code) = do
   case res of
     Right (OAuthResponse accessToken teamId teamName (OAuthResponseBot botAccessToken)) -> do
       liftIO $ runInsert' $ insertTeam (unpack teamId) (unpack teamName) (unpack accessToken) (unpack botAccessToken)
-      return $(compileTextFile "templates/slack_auth_redirect.html")
+      return $(compileTextFile "templates/dist/slack_auth_redirect.html")
     Left e -> do
       liftIO $ putStrLn e
-      return $(compileTextFile "templates/500.html")
-slackAuthRedirect _ = return $(compileTextFile "templates/500.html")
+      return $(compileTextFile "templates/dist/500.html")
+slackAuthRedirect _ = return $(compileTextFile "templates/dist/500.html")
 
 howtoR :: Handler Markup
-howtoR = return $(compileTextFile "templates/howto.html")
+howtoR = return $(compileTextFile "templates/dist/howto.html")
 
 getAccessToken code = do
   res <- liftIO $ W.get $ unpack ("https://slack.com/api/oauth.access?client_id=4214417927.281859902129&client_secret=95f18a982b24ac88f1ab542dd6e5a6b1&code=" `append` code)

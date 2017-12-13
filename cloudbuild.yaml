@@ -1,0 +1,32 @@
+steps:
+- name: gcr.io/cloud-builders/gsutil
+  args: ['cp', 'gs://slacknowledge-gccb-cache/.stack-work.tgz', '.stack-work.tgz']
+- name: gcr.io/cloud-builders/wget
+  entrypoint: 'tar'
+  args: ['-xzf', '.stack-work.tgz']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['cp', 'gs://slacknowledge-gccb-cache/.stack.tgz', '/builder/home/.stack.tgz']
+- name: gcr.io/cloud-builders/wget
+  entrypoint: 'tar'
+  args: ['-xzf', '/builder/home/.stack.tgz', '-C', '/']
+
+- name: gcr.io/slacknowledge/slacknowledge-build:latest
+  args: ['build.sh']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f', 'images/api/Dockerfile', '--tag=gcr.io/slacknowledge/slacknowledge-api', '.']
+
+- name: gcr.io/cloud-builders/wget
+  entrypoint: 'tar'
+  args: ['-czf', '.stack-work.tgz', '.stack-work']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['cp', '.stack-work.tgz', 'gs://slacknowledge-gccb-cache/.stack-work.tgz']
+- name: gcr.io/cloud-builders/wget
+  entrypoint: 'tar'
+  args: ['-czf', '/builder/home/.stack.tgz', '/builder/home/.stack']
+- name: gcr.io/cloud-builders/gsutil
+  args: ['cp', '/builder/home/.stack.tgz', 'gs://slacknowledge-gccb-cache/.stack.tgz']
+
+images: ['gcr.io/slacknowledge/slacknowledge-api']
+
+timeout: 60m

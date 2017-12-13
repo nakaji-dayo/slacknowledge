@@ -19,6 +19,11 @@ library
                      , Slacknowledge.Bot
                      , Slacknowledge.Type
                      , Slacknowledge.ES
+                     , Slacknowledge.Config
+                     , Slacknowledge.Db
+                     , Slacknowledge.Team
+                     , Slacknowledge.Relation
+                     , Data.SimpleSearchQuery
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , servant-server
@@ -45,6 +50,8 @@ library
                      , HDBC-mysql
                      , persistable-record
                      , template-haskell == 2.11.1.0
+                     , yaml
+                     , attoparsec
   default-language:    Haskell2010
 
 executable slacknowledge-devel

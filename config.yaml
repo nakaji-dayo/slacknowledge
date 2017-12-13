@@ -1,0 +1,4 @@
+mysql_user: "_env:MYSQL_USER:'slacknowledge'"
+mysql_password: "_env:MYSQL_PASSWORD:'slacknowledge'"
+mysql_host: "_env:MYSQL_HOST:'127.0.0.1'"
+es_host: "_env:ES_HOST:'http://localhost:9200'"

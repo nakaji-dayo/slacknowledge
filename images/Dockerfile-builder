@@ -1,0 +1,7 @@
+FROM fpco/stack-build:lts-9.14
+
+WORKDIR /workspace
+
+
+RUN stack setup
+RUN stack build

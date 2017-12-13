@@ -20,9 +20,14 @@ import Network.HTTP.Client (responseBody)
 import Data.Maybe
 import qualified Data.ByteString.Lazy as BL
 import Data.Aeson.Encode.Pretty
-import Data.Text (Text)
+import Data.Text (Text, pack)
+import Slacknowledge.Config
+import Data.Yaml.Config
 
-runBH' = withBH defaultManagerSettings server
+runBH' :: BH IO a -> IO a
+runBH' x = do
+  config <- loadYamlSettings ["config.yaml"] [] useEnv
+  withBH defaultManagerSettings (Server $ pack $ esHost config) $ x
 
 migration :: IO()
 migration = runBH' $ do
