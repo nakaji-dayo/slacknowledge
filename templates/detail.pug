@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  .thread
+    h2
+      a(href="/threads/#{formatSlackTimeStamp (thread ^. ts)}") \#{roundText 40 $ thread ^. text}
+    p \#{thread ^. text}
+    .user-info
+      img(src="#{thread ^. userImage}")
+      p \#{thread ^. userName}
+    .tags-container
+      div#add-tag
+    .replies
+      h3 Replies
+      | %{ forall reply <- (thread ^. replies) }
+      .reply
+        p \#{reply ^. text}
+        .user-info
+          img(src="#{reply ^. userImage}")
+          p \#{reply ^. userName}
+      | %{endforall}
+
+block header
+  script(type='text/javascript').
+     window.config = {threadId: "\#{formatSlackTimeStamp $ thread ^. ts}",
+       tags: \#{show $ thread ^. tags}}

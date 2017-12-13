@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  aite-build:
+    build:
+      context: ..
+      dockerfile: ./images/aite-build/Dockerfile
+    image: aite-build
+    volume

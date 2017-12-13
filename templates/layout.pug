@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    block header
+    title slacknowledge
+    link(rel="stylesheet", href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic")
+    link(rel="stylesheet", href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css")
+    link(rel="stylesheet", href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css")
+    link(rel="stylesheet", href="/static/app.css")
+    link(rel="icon", type="image/png", href="/static/img/icon.png")
+    script(src="/static/js/elm.js", defer)
+    script(src="/static/js/index.js", defer)
+  body
+    .header
+      img(src="/static/img/icon.png", width="32", height="32")
+      a(href="/")
+        h1 slacknowledge
+      ul.float-right
+        li
+          a(href="https://slack.com/oauth/authorize?client_id=4214417927.281859902129&scope=bot,channels:history,users:read") install to your slack
+        li
+          a(href="/howto") How to use this
+        li
+          a(href="mailto:daishi@pig-brewing.com") contact
+    div.content
+      block content
+    div.footer
+     div
+       | Icons made by
+       a(href="http://www.freepik.com", title="Freepik")  Freepik
+       |  from
+       a(href="https://www.flaticon.com/", title="Flaticon")  www.flaticon.com
+       |  is licensed by
+       a(href="http://creativecommons.org/licenses/by/3.0/", title="Creative Commons BY 3.0", target="_blank")
+       |  CC 3.0 BY

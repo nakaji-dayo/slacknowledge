@@ -1,0 +1,30 @@
+version: '3'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.2
+    volumes:
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      http.host: 0.0.0.0
+      transport.host: 127.0.0.1
+      http.publish_host: 127.0.0.1
+      xpack.security.enabled: "false"
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: kibana:5.5.2
+    ports:
+      - 5601:5601
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: slacknowledge
+      MYSQL_USER: slacknowledge
+      MYSQL_PASSWORD: slacknowledge
+      MYSQL_ROOT_PASSWORD: slacknowledge

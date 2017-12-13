@@ -1,0 +1,102 @@
+name:                slacknowledge
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/githubuser/slacknowledge#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Author name here
+maintainer:          example@example.com
+copyright:           2017 Author name here
+category:            Web
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Slacknowledge.Api
+                     , Slacknowledge.Bot
+                     , Slacknowledge.Type
+                     , Slacknowledge.ES
+  build-depends:       base >= 4.7 && < 5
+                     , aeson
+                     , servant-server
+                     , wai
+                     , warp
+                     , slack-api
+                     , wreq
+                     , lens
+                     , mtl
+                     , text
+                     , bytestring
+                     , bloodhound
+                     , aeson-qq
+                     , http-client
+                     , aeson-pretty
+                     , heterocephalus
+                     , servant-blaze
+                     , blaze-markup
+                     , regex-pcre
+                     , relational-record
+                     , relational-query
+                     , relational-query-HDBC
+                     , HDBC
+                     , HDBC-mysql
+                     , persistable-record
+                     , template-haskell == 2.11.1.0
+  default-language:    Haskell2010
+
+executable slacknowledge-devel
+  hs-source-dirs:      app
+  main-is:             DevelMain.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , slacknowledge
+                     , rapid
+  default-language:    Haskell2010
+
+executable slacknowledge-api
+  hs-source-dirs:      app
+  main-is:             Api.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , slacknowledge
+  default-language:    Haskell2010
+
+executable slacknowledge-client-generator
+  hs-source-dirs:      app
+  main-is:             ClientGenerator.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , slacknowledge
+                     , servant-elm
+                     , elm-export
+                     , servant
+                     , text
+  default-language:    Haskell2010
+
+executable slacknowledge-bot
+  hs-source-dirs:      app
+  main-is:             Bot.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , slacknowledge
+  default-language:    Haskell2010
+
+test-suite slacknowledge-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , slacknowledge
+                     , hspec
+                     , hspec-wai
+                     , hspec-wai-json
+                     , aeson
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  default-language:    Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/githubuser/slacknowledge

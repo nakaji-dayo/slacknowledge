@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  .threads
+    h2 New Threads
+      | %{ forall thread <- threads }
+    div.thread
+      h2
+        a(href="/threads/#{formatSlackTimeStamp (thread ^. ts)}") \#{roundText 40 $ thread ^. text}
+      blockquote
+        p
+          em \#{thread ^. text}
+      .user-info
+        img(src="#{thread ^. userImage}")
+        p \#{thread ^. userName}
+      p \#{length (thread ^. replies)} replies
+      .tags
+        | %{ forall tag <- (thread ^. tags) }
+        div
+          a(href="/search?tag=\#{tag}") \#{ tag }
+        | %{ endforall }
+    | %{ endforall }

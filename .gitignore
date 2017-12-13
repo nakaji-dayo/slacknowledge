@@ -1,0 +1,5 @@
+.DS_Store
+.stack-work/
+elm-stuff/
+templates/dist
+images/data
