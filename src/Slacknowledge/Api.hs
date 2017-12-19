@@ -76,8 +76,6 @@ server = (searchR Nothing)
          :<|> serveDirectoryWebApp "static"
          :<|> postTagR
 
-
-
 searchR :: Maybe Text -> Handler Markup
 searchR mq = do
   m_param <- case parseSearchQuery <$> mq of
