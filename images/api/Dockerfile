@@ -6,6 +6,6 @@ RUN apt-get -y update \
 ADD config.yaml /
 ADD dist/slacknowledge-api /usr/bin/
 ADD dist/slacknowledge-bot /usr/bin/
-ADD static /
+ADD static /static
 
 # ENTRYPOINT ["slacknowledge-api"]
