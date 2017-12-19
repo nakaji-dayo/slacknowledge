@@ -2,35 +2,27 @@
 
 module Data.SimpleSearchQuery where
 
-import           Data.Attoparsec.Text       as A
-import           Data.Text                  (Text)
-import qualified Data.Text                  as T
-import Control.Applicative
+import           Control.Applicative
+import           Data.Attoparsec.Text   as A
+import           Data.Text              (Text)
+import qualified Data.Text         as T
+import Data.Map
 
--- data Query = Tag Text | Term Text
---   deriving (Show)
+type QueryMap = Map QueryKey [Text]
 
--- simple :: Parser [Query]
--- simple = many' (p_tag <|> p_term)
+data QueryKey = Keyword | Label Text
+  deriving (Show, Eq, Ord)
 
--- p_tag :: Parser Query
--- p_tag = Tag <$> ("tag:" *> (
---   (A.takeWhile (/= ' '))
---   ) <* char ' ')
+searchStringParser :: Parser QueryMap
+searchStringParser = fromListWith mappend <$> f
+  where
+    f = g `sepBy` " "
+    g = do
+      k_or_v <- A.takeWhile (\x -> x /= ':' && x /= ' ')
+      optional $ char ':'
+      mv <- optional $ A.takeWhile1 (/= ' ')
+      return $ case mv of
+                 Just v -> (Label k_or_v, [v])
+                 _ -> (Keyword, [k_or_v])
 
--- p_term :: Parser Query
--- p_term = Term <$> ((A.takeWhile (/= ' ')) <* char ' ')
-
-data Query = Query
-  { keywords :: [Text]
-  , tags :: [Text]
-  } deriving (Show)
-
-
-queryParser =
-  Query
-  <$> (labeled "k")
-  <*> (labeled "tag")
-
-labeled l =
-  (string l *> A.takeWhile (/= ' ')) `sepBy` (char ' ')
+parseSearchQuery = parseOnly searchStringParser

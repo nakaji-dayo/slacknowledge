@@ -58,7 +58,7 @@ knowledgeBot teamId teamName defaultTags h = forever $ do
         Right _ -> void $ indexThreadFromMsgTs teamId teamName defaultTags cid tts
         Left _ -> putStrLn "replied to unrelated message"
     ChannelJoined (Channel { _channelId = cid }) -> do
-      sendMessage h cid "Hello. I am slacknowledge bot.\nWhen a thread is added a memo reaction, I will save it.\nEveryone can view the saved thread at slacknowledge.pig-brewing.com."
+      sendMessage h cid "Hello. I am slacknowledge bot.\nWhen a thread is added a :memo: (memo) reaction, I will save it.\nEveryone can view the saved thread at slacknowledge.pig-brewing.com."
     event -> do
       putStrLn $ "unhandled event: " ++ (show event)
       return ()

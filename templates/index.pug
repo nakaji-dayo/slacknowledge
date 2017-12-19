@@ -17,6 +17,6 @@ block content
       .tags
         | %{ forall tag <- (thread ^. tags) }
         div
-          a(href="/search?tag=\#{tag}") \#{ tag }
+          a(href="/search?q=tag:\#{tag}") \#{ tag }
         | %{ endforall }
     | %{ endforall }

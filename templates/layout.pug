@@ -12,24 +12,36 @@ html
     script(src="/static/js/index.js", defer)
   body
     .header
-      img(src="/static/img/icon.png", width="32", height="32")
-      a(href="/")
-        h1 slacknowledge
-      ul.float-right
-        li
+      span.logo
+        img(src="/static/img/icon.png", width="32", height="32")
+        a(href="/")
+          h1 slacknowledge
+      form(method="GET", action="/search").actions.search-form
+          input(type="text", name="q", value="#{fromMaybe T.empty mq}")
+          input(type="submit", class="button", value="search")
+      div.actions
+        div.menu
           a(href="https://slack.com/oauth/authorize?client_id=4214417927.281859902129&scope=bot,channels:history,users:read") install to your slack
-        li
+        div.menu
           a(href="/howto") How to use this
-        li
+        div.menu
           a(href="mailto:daishi@pig-brewing.com") contact
     div.content
       block content
     div.footer
-     div
-       | Icons made by
-       a(href="http://www.freepik.com", title="Freepik")  Freepik
-       |  from
-       a(href="https://www.flaticon.com/", title="Flaticon")  www.flaticon.com
-       |  is licensed by
-       a(href="http://creativecommons.org/licenses/by/3.0/", title="Creative Commons BY 3.0", target="_blank")
-       |  CC 3.0 BY
+      hr
+      div.links
+        div
+          a(href="https://slack.com/oauth/authorize?client_id=4214417927.281859902129&scope=bot,channels:history,users:read") install to your slack
+        div
+          a(href="/howto") How to use this
+        div
+          a(href="mailto:daishi@pig-brewing.com") contact
+      div.credit
+        | Icons made by
+        a(href="http://www.freepik.com", title="Freepik")  Freepik
+        |  from
+        a(href="https://www.flaticon.com/", title="Flaticon")  www.flaticon.com
+        |  is licensed by
+        a(href="http://creativecommons.org/licenses/by/3.0/", title="Creative Commons BY 3.0", target="_blank")
+        |  CC 3.0 BY

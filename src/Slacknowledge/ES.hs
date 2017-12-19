@@ -23,6 +23,8 @@ import Data.Aeson.Encode.Pretty
 import Data.Text (Text, pack)
 import Slacknowledge.Config
 import Data.Yaml.Config
+import Data.SimpleSearchQuery
+import qualified Data.Map as M
 
 runBH' :: BH IO a -> IO a
 runBH' x = do
@@ -65,12 +67,43 @@ indexThread thread = runBH' $ do
     thread (DocId  (formatSlackTimeStamp $ thread ^. ts))
   liftIO $ print res
 
-searchThread :: (MonadError String m, MonadIO m) => Maybe Text -> m [Thread]
-searchThread mtag = do
-  let mquery = fmap (\tag -> TermQuery (Term "tags" tag) Nothing) mtag
+data SearchParam = SearchParam
+  { spKeywords :: [Text]
+  , spTags :: [Text]
+  }
+
+fromQueryMap :: QueryMap -> SearchParam
+fromQueryMap m = SearchParam
+  { spKeywords = M.findWithDefault [] Keyword m
+  , spTags = M.findWithDefault [] (Label "tag") m
+  }
+
+searchThread :: (MonadError String m, MonadIO m) => Maybe SearchParam -> m [Thread]
+searchThread mparam = do
+  let mk_match k = QueryMultiMatchQuery $ MultiMatchQuery
+        { multiMatchQueryFields = [FieldName "text", FieldName "user_name", FieldName "tags", FieldName "replies.text"]
+        , multiMatchQueryString = (QueryString k)
+        , multiMatchQueryOperator = And
+        , multiMatchQueryZeroTerms = ZeroTermsNone
+        , multiMatchQueryTiebreaker = Nothing
+        , multiMatchQueryType = Nothing
+        , multiMatchQueryCutoffFrequency = Nothing
+        , multiMatchQueryAnalyzer = Nothing
+        , multiMatchQueryMaxExpansions = Nothing
+        , multiMatchQueryLenient = Nothing
+        }
+  let mk_query p = QueryBoolQuery $ BoolQuery
+        { boolQueryMustMatch = fmap mk_match (spKeywords p)
+        , boolQueryFilter = map (\tag -> Filter $ TermQuery (Term "tags" tag) Nothing) (spTags p)
+        , boolQueryMustNotMatch = []
+        , boolQueryShouldMatch = []
+        , boolQueryMinimumShouldMatch = Nothing
+        , boolQueryBoost = Nothing
+        , boolQueryDisableCoord = Nothing
+        }
   res <- liftIO . runBH' $ do
     let search = Search
-          { queryBody = mquery
+          { queryBody = fmap mk_query mparam
           , filterBody = Nothing
           , sortBody = Just [DefaultSortSpec (mkSort (FieldName "ts") Descending)]
           , aggBody = Nothing
