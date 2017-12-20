@@ -76,6 +76,8 @@ body {
 .thread {
   padding: 8px 8px 20px 8px;
   border-bottom: solid 1px #2d4676; }
+  .thread h2 {
+    padding: 8px 0; }
 
 .user-info {
   display: flex; }
