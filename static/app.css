@@ -1,3 +1,16 @@
+a {
+  color: #2d4676; }
+
+input[type="submit"], input[type="button"], button, button.button {
+  background-color: #2d4676;
+  border-color: #2d4676; }
+
+input[type="text"] {
+  background-color: #eee; }
+
+input[type="text"]:focus {
+  border-color: #2d4676; }
+
 body {
   background-color: #efefef; }
 
@@ -6,13 +19,14 @@ body {
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
-  background-color: #cdc;
+  background-color: #212b33;
   padding: 8px; }
   .header img {
     margin: 0 8px;
     width: 32px;
     height: 32px; }
   .header h1 {
+    color: #fff;
     display: inline; }
   .header .actions {
     display: flex;
@@ -23,6 +37,8 @@ body {
     @media (max-width: 726px) {
       .header .actions .menu {
         display: none; } }
+    .header .actions a {
+      color: #ddd; }
   .header .search-form {
     margin: 0;
     flex-grow: 2;
@@ -33,7 +49,6 @@ body {
       .header .search-form {
         padding: 8px; } }
     .header .search-form input[type="text"] {
-      background-color: #eee;
       margin: 0 4px;
       width: 100%; }
     .header .search-form input[type="submit"] {
@@ -60,7 +75,7 @@ body {
 
 .thread {
   padding: 8px 8px 20px 8px;
-  border-bottom: solid 1px #a600c6; }
+  border-bottom: solid 1px #2d4676; }
 
 .user-info {
   display: flex; }
@@ -71,24 +86,29 @@ body {
 
 .tags-container {
   padding-bottom: 40px; }
+  .tags-container div div {
+    display: flex; }
 
 .tags {
   display: flex;
   flex-wrap: wrap; }
   .tags a {
     white-space: nowrap;
-    background-color: #0d9542;
+    color: #ca5b1a;
+    border: 1px solid #ca5b1a;
+    border-radius: 3px;
     padding: 4px 8px;
     margin: 4px;
-    color: #fff; }
+    height: 35px; }
 
 .tag-edit button {
   font-size: .8rem;
   height: 2.8rem;
   line-height: 2.8rem;
   padding: 0 1.5rem;
-  margin: 4px; }
+  margin: 5px;
+  height: 32px; }
 
 .reply {
   padding: 20px 40px;
-  border-bottom: solid 1px #a699c6; }
+  border-bottom: solid 1px #2d4676; }
