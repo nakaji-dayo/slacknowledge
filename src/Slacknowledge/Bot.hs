@@ -2,6 +2,8 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE ViewPatterns #-}
+
 
 module Slacknowledge.Bot where
 
@@ -59,6 +61,12 @@ knowledgeBot teamId teamName defaultTags h = forever $ do
         Left _ -> putStrLn "replied to unrelated message"
     ChannelJoined (Channel { _channelId = cid }) -> do
       sendMessage h cid "Hello. I am slacknowledge bot.\nWhen a thread is added a :memo: (memo) reaction, I will save it.\nEveryone can view the saved thread at slacknowledge.pig-brewing.com."
+    event@(Message cid _ msg _ _ _) -> do
+      let myId = ((getSession h) ^. slackSelf . selfUserId . getId)
+      case msg of
+        (T.stripPrefix ("<@" `T.append` myId `T.append` ">") -> Just mbody) -> do
+          when ("hey" `T.isInfixOf` mbody) $ sendMessage h cid "hey!"
+        _ -> putStrLn $ "unhandled event: " ++ (show event)
     event -> do
       putStrLn $ "unhandled event: " ++ (show event)
       return ()
