@@ -31,17 +31,17 @@ run :: IO ()
 run = do
   conf <- mkBotConfig
   migration
-  withSlackHandle conf (knowledgeBot "T046AC9T9" "Pig Brewing" ["pig-brewing"])
+  withSlackHandle conf (knowledgeBot "T4LFB6C4C" "haskell-jp" ["haskell"])
 
 mkBotConfig :: IO SlackConfig
 mkBotConfig = do
   x <- lookupEnv "SLACK_API_TOKEN"
-  let apiToken = "***REMOVED***"
+  let apiToken = "xoxb-289650422997-mwYSuE9GyT011TiJ1o07icvq"
   return SlackConfig{ _slackApiToken = apiToken }
 
 mkApiConfig :: IO SlackConfig
 mkApiConfig = do
-  let apiToken = "***REMOVED***"
+  let apiToken = "xoxp-156521216148-179942123621-288990224225-f15e4e1a458f91376e6f79f69305a11a"
   return SlackConfig{ _slackApiToken = apiToken }
 
 knowledgeBot :: Text -> Text -> [Text] -> SlackHandle -> IO ()
