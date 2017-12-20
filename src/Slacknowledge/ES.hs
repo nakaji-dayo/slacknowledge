@@ -38,7 +38,6 @@ migration = runBH' $ do
   rs <-  putMapping index threadMapping ThreadMapping
   liftIO $ print rs
 
-server = (Server "http://localhost:9200")
 index = IndexName "slacknowledge"
 indexSettings = IndexSettings (ShardCount 1) (ReplicaCount 0)
 threadMapping = MappingName "thread"
