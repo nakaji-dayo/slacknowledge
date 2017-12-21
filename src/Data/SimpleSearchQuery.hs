@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-
 module Data.SimpleSearchQuery where
 
 import           Control.Applicative

@@ -9278,7 +9278,7 @@ var _user$project$AddTag$view = function (model) {
 				{
 					ctor: '::',
 					_0: _elm_lang$html$Html_Attributes$href(
-						A2(_elm_lang$core$Basics_ops['++'], '/search?tag=', tag)),
+						A2(_elm_lang$core$Basics_ops['++'], '/search?q=tags:', tag)),
 					_1: {ctor: '[]'}
 				},
 				{

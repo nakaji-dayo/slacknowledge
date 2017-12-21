@@ -44,7 +44,7 @@ view model =
                   button [ onClick OpenInput ] [ text "edit tag" ]
                      ]
                 ]
-        mkTag tag = [ a [href ("/search?tag=" ++ tag)] [ text tag ]]
+        mkTag tag = [ a [href ("/search?q=tags:" ++ tag)] [ text tag ]]
         tags = [div [class "tags"]
                      (List.concat <| List.map mkTag model.tags)
                ]

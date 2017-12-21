@@ -53,7 +53,11 @@ instance ToJSON ThreadMapping where
       "type": "double"
     },
     "tags": {
-      "type": "string",
+      "type": "keyword",
+      "index": "not_analyzed"
+    },
+    "channel_id": {
+      "type": "keyword",
       "index": "not_analyzed"
     }
   }

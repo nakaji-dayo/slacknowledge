@@ -27,6 +27,10 @@ import GHC.Generics
 import Slacknowledge.ES
 import Data.Aeson.Encode.Pretty
 
+testIndexThreadFromMsgTs ts_str = do
+  let (Just ts) = decode ts_str
+  indexThreadFromMsgTs "T4LFB6C4C" "haskell-jp" ["haskell"] (Id "C5666B6BB") ts
+
 run :: IO ()
 run = do
   conf <- mkBotConfig
@@ -77,7 +81,7 @@ indexThreadFromMsgTs teamId teamName defaultTags cid msg_ts = do
   conf <- mkApiConfig
   ethread <- runExceptT $ do
     root_msg <- getRootMessage conf cid msg_ts
-    root_thread <- buildThread teamId teamName defaultTags conf root_msg
+    root_thread <- buildThread teamId teamName cid defaultTags conf root_msg
     reps <- getReplies conf cid (root_msg ^. ts)
     rep_threads <- mapM (buildThreadReply conf) (reps ^. messages)
     return $ root_thread & replies .~ rep_threads
@@ -96,14 +100,15 @@ getRootMessage conf cid msg_ts = do
 
 buildThread
   :: (MonadError Text m, MonadIO m)
-  => Text -> Text -> [Text]
+  => Text -> Text -> ChannelId -> [Text]
   -> SlackConfig
   -> HistoryMessage
   -> m Thread
-buildThread teamId teamName defaultTags conf msg = do
+buildThread teamId teamName cid defaultTags conf msg = do
   u <- getUser conf (msg ^. user)
   return $ Thread (msg ^. text) (msg ^. user . getId)
-    (_userName $ u ^. user) (u ^. user . userProfile . profileImage192) (msg ^. ts) teamId teamName [] defaultTags
+    (_userName $ u ^. user) (u ^. user . userProfile . profileImage192) (msg ^. ts)
+    teamId teamName (_getId cid) [] defaultTags
 
 buildThreadReply
   :: (MonadError Text m, MonadIO m)

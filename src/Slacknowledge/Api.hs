@@ -37,6 +37,10 @@ import           Text.Heterocephalus
 import           Text.Regex.PCRE
 import           Web.Slack                 (formatSlackTimeStamp)
 import Data.SimpleSearchQuery
+import Text.Blaze.Html (toHtml)
+import Text.Blaze.Internal (preEscapedText, preEscapedLazyText)
+import Text.Blaze.Html.Renderer.Text (renderHtml)
+import Data.SlackMessageFormat
 
 data User = User
   { userId        :: Int
@@ -84,8 +88,8 @@ searchR mq = do
     Nothing -> return Nothing
   ethreads <- liftIO $ runExceptT $ ES.searchThread m_param
   return $ case ethreads of
-    Right threads -> $(compileTextFile "templates/dist/index.html")
-    Left e        ->  $(compileTextFile "templates/dist/500.html")
+    Right threads -> $(compileHtmlFile "templates/dist/index.html")
+    Left e        ->  $(compileHtmlFile "templates/dist/500.html")
 
 detailHtml :: Text -> Handler Markup
 detailHtml id = do
@@ -93,10 +97,10 @@ detailHtml id = do
   ethread <- liftIO . runExceptT $ ES.getThread id
   liftIO $ print ethread
   case ethread of
-    Right thread -> return $(compileTextFile "templates/dist/detail.html")
+    Right thread -> return $(compileHtmlFile "templates/dist/detail.html")
     Left e -> do
       liftIO $ print e
-      return $(compileTextFile "templates/dist/500.html")
+      return $(compileHtmlFile "templates/dist/500.html")
 
 
 postTagR :: Text -> PostTagRequest -> Handler Text
@@ -124,18 +128,18 @@ slackAuthRedirect (Just code) = do
   case res of
     Right (OAuthResponse accessToken teamId teamName (OAuthResponseBot botAccessToken)) -> do
       liftIO $ runInsert' $ insertTeam (unpack teamId) (unpack teamName) (unpack accessToken) (unpack botAccessToken)
-      return $(compileTextFile "templates/dist/slack_auth_redirect.html")
+      return $(compileHtmlFile "templates/dist/slack_auth_redirect.html")
     Left e -> do
       liftIO $ putStrLn e
-      return $(compileTextFile "templates/dist/500.html")
+      return $(compileHtmlFile "templates/dist/500.html")
 slackAuthRedirect _ = do
   let mq = Nothing
-  return $(compileTextFile "templates/dist/500.html")
+  return $(compileHtmlFile "templates/dist/500.html")
 
 howtoR :: Handler Markup
 howtoR = do
   let mq = Nothing
-  return $(compileTextFile "templates/dist/howto.html")
+  return $(compileHtmlFile "templates/dist/howto.html")
 
 getAccessToken code = do
   res <- liftIO $ W.get $ unpack ("https://slack.com/api/oauth.access?client_id=4214417927.281859902129&client_secret=95f18a982b24ac88f1ab542dd6e5a6b1&code=" `append` code)
@@ -145,3 +149,7 @@ roundText :: Int -> Text -> Text
 roundText n x
   | (T.length x) > n = T.take n x `T.append` "..."
   | otherwise = x
+
+escapeBodyText x = case parseSlackMessage x of
+  Right t -> preEscapedText t
+  Left e -> "parse message error"

@@ -4,7 +4,7 @@ block content
   .thread
     h2
       a(href="/threads/#{formatSlackTimeStamp (thread ^. ts)}") \#{roundText 40 $ thread ^. text}
-    p \#{thread ^. text}
+    p \#{escapeBodyText $ thread ^. text}
     .user-info
       img(src="#{thread ^. userImage}")
       p \#{thread ^. userName}
@@ -14,7 +14,7 @@ block content
       h3 Replies
       | %{ forall reply <- (thread ^. replies) }
       .reply
-        p \#{reply ^. text}
+        p \#{escapeBodyText $ reply ^. text}
         .user-info
           img(src="#{reply ^. userImage}")
           p \#{reply ^. userName}
@@ -23,4 +23,5 @@ block content
 block header
   script(type='text/javascript').
      window.config = {threadId: "\#{formatSlackTimeStamp $ thread ^. ts}",
-       tags: \#{show $ thread ^. tags}}
+       tags: \#{ preEscapedText $ T.pack $  show $ thread ^. tags}
+       }
