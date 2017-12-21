@@ -24,6 +24,7 @@ library
                      , Slacknowledge.Team
                      , Slacknowledge.Relation
                      , Data.SimpleSearchQuery
+                     , Data.SlackMessageFormat
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , servant-server
