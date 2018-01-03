@@ -14,8 +14,10 @@ slackMessageParser = do
   return $  x `T.append` y
   where
     p = do
-      a <- A.takeTill (== '<')
+      a <- A.takeTill (flip elem ['<', '\n'])
       traceM $ "newChar: " ++ show a
+      plink a <|> pbr a
+    plink a = do
       char '<'
       special <- optional $ char '#' <|> char '@' <|> char '!'
       link <- A.takeTill (== '>')
@@ -24,5 +26,8 @@ slackMessageParser = do
       case special of
         Nothing -> return (T.concat [a, "<a href=\"", link, "\" target=\"_blank\">", link, "</a>"])
         Just s -> return $ T.cons s link
+    pbr a = do
+      char '\n'
+      return $ T.concat [a, "<br />"]
 
 parseSlackMessage = parseOnly slackMessageParser
