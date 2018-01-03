@@ -152,4 +152,4 @@ roundText n x
 
 escapeBodyText x = case parseSlackMessage x of
   Right t -> preEscapedText t
-  Left e -> "parse message error"
+  Left e -> "parse message failed"
