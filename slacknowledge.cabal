@@ -55,6 +55,7 @@ library
                      , attoparsec
                      , containers
                      , blaze-html
+                     , emoji
   default-language:    Haskell2010
 
 executable slacknowledge-devel
