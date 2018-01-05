@@ -9,7 +9,7 @@ block content
         a(href="/threads/#{formatSlackTimeStamp (thread ^. ts)}") \#{roundText 40 $ thread ^. text}
       blockquote
         p
-          em \#{thread ^. text}
+          em \#{escapeBodyText $ thread ^. text}
       .user-info
         img(src="#{thread ^. userImage}")
         p \#{thread ^. userName}
