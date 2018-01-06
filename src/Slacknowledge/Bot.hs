@@ -48,6 +48,7 @@ mkApiConfig = do
   let apiToken = "xoxp-156521216148-179942123621-288990224225-f15e4e1a458f91376e6f79f69305a11a"
   return SlackConfig{ _slackApiToken = apiToken }
 
+-- teamNameといいつつドメインに使われるteam名なので注意(e.g. haskell-jp)
 knowledgeBot :: Text -> Text -> [Text] -> SlackHandle -> IO ()
 knowledgeBot teamId teamName defaultTags h = forever $ do
   getNextEvent h >>= \case

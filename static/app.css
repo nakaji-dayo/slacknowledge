@@ -79,6 +79,9 @@ body {
   .thread h2 {
     padding: 8px 0; }
 
+.slack-link-container {
+  padding: 0 0 16px 4px; }
+
 .user-info {
   display: flex; }
   .user-info img {

@@ -5,6 +5,8 @@ block content
     h2
       a(href="/threads/#{formatSlackTimeStamp (thread ^. ts)}") \#{roundText 40 $ thread ^. text}
     p \#{escapeBodyText $ thread ^. text}
+    .slack-link-container
+      a(href="https://#{thread ^. teamName}.slack.com/archives/#{thread ^. channelId}/p#{formatSlackTimeStamp (thread ^. ts)}", target="_blank") open in slack
     .user-info
       img(src="#{thread ^. userImage}")
       p \#{thread ^. userName}
