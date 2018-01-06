@@ -45,7 +45,7 @@ extra-deps:
 - template-haskell-2.12.0.0
 - git: https://github.com/nakaji-dayo/slack-api.git
   commit: 100f422e88fb575c2bb8b6f6944e79d02bedefa1
-- ../hs-emoji
+- emoji-0.1.0.2
 
 # Override default flag values for local packages and extra-deps
 flags: {}

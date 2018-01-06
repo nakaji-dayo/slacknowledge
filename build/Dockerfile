@@ -1,4 +1,4 @@
-FROM fpco/stack-build:lts-9.14
+FROM fpco/stack-build:lts-10.2
 
 RUN echo "mysql-server mysql-server/root_password password root" \
     | debconf-set-selections \
